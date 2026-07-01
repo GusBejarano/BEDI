@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Autoevaluación – Movimiento 01 · BEDI</title>
+
+<!--
+  ============================================================
+  BEDI · Carpeta: Autoevaluaciones
+  Pieza: Movimiento 01 - Autoevaluación
+  ============================================================
+  RUTA SUGERIDA EN EL SITIO: /autoevaluaciones/movimiento-01/
+  Esta página NO debe enlazarse desde el menú ni el sitemap.
+  Es accesible solo por URL directa (acceso tipo "admin/oculto").
+
+  CONFIGURACIÓN REQUERIDA ANTES DE PUBLICAR (ver sección
+  "CONFIG Web3Forms" en el <script> al final del archivo):
+    1. Generar una Access Key gratuita en https://web3forms.com
+       usando gustavo@bejaranodigital.com (independiente de la
+       que usa el formulario "Contáctenos" del sitio)
+    2. Reemplazar WEB3FORMS_ACCESS_KEY con tu key real
+    3. El envío incluye automáticamente CC a
+       gustavo@bejaranodigital.com (ya configurado en el código)
+  ============================================================
+-->
+
+<style>
+  /* ============================================================
+     BEDI – Variables de marca oficial
+     Fuente: brand-system-bedi (Manual de Marca BEDI v1, abril 2026)
+     ============================================================ */
+  :root {
+    --bedi-dark:   #0C2340;  /* Azul Noche – primario */
+    --bedi-gold:   #C9A84C;  /* Dorado Ejecutivo – acento */
+    --bedi-white:  #FFFFFF;
+    --bedi-pearl:  #F4F6F9;  /* Gris Perla – fondos */
+    --bedi-mid:    #1A3A6A;  /* Azul Medio – divisores */
+    --bedi-mist:   #8FA8C0;  /* Azul Niebla – secundario */
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bedi-pearl);
+    color: var(--bedi-dark);
+    line-height: 1.6;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Raleway', 'Montserrat', sans-serif;
+    font-weight: 800;
+    color: var(--bedi-dark);
+    margin: 0;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- HERO / PORTADA ---------- */
+  .hero {
+    background: var(--bedi-dark);
+    padding: 64px 0 56px;
+    text-align: center;
+  }
+
+  .hero .eyebrow {
+    color: var(--bedi-gold);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .hero h1 {
+    color: var(--bedi-white);
+    font-size: 34px;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+
+  .hero p {
+    color: var(--bedi-mist);
+    font-size: 16px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ---------- TARJETA PRINCIPAL ---------- */
+  .card {
+    background: var(--bedi-white);
+    border-radius: 4px;
+    padding: 40px;
+    margin: -32px auto 40px;
+    box-shadow: 0 4px 24px rgba(12, 35, 64, 0.08);
+    position: relative;
+  }
+
+  /* ---------- PANTALLAS (se muestran/ocultan con JS) ---------- */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ---------- INTRO ---------- */
+  .intro-text {
+    font-size: 16px;
+    color: var(--bedi-mid);
+    margin-bottom: 28px;
+  }
+
+  .intro-text strong { color: var(--bedi-dark); }
+
+  /* ---------- CAMPOS DE FORMULARIO ---------- */
+  label {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--bedi-dark);
+    margin-bottom: 8px;
+  }
+
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--bedi-mist);
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--bedi-dark);
+    margin-bottom: 22px;
+    background: var(--bedi-white);
+    transition: border-color 0.2s ease;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus {
+    outline: none;
+    border-color: var(--bedi-gold);
+  }
+
+  /* ---------- PREGUNTAS ---------- */
+  .pregunta-bloque {
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--bedi-pearl);
+  }
+
+  .pregunta-bloque:last-of-type {
+    border-bottom: none;
+  }
+
+  .pregunta-numero {
+    display: inline-block;
+    background: var(--bedi-dark);
+    color: var(--bedi-gold);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-radius: 50%;
+    margin-bottom: 12px;
+  }
+
+  .pregunta-texto {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--bedi-dark);
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .opcion {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    border: 1.5px solid var(--bedi-pearl);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: var(--bedi-white);
+  }
+
+  .opcion:hover {
+    border-color: var(--bedi-mist);
+    background: var(--bedi-pearl);
+  }
+
+  .opcion.selected {
+    border-color: var(--bedi-gold);
+    background: #FBF7EC;
+  }
+
+  .opcion input[type="radio"] {
+    accent-color: var(--bedi-gold);
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .opcion-label {
+    font-size: 15px;
+    color: var(--bedi-mid);
+  }
+
+  /* ---------- BOTÓN ---------- */
+  .btn {
+    width: 100%;
+    background: var(--bedi-dark);
+    color: var(--bedi-white);
+    border: none;
+    padding: 16px 24px;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    letter-spacing: 0.3px;
+  }
+
+  .btn:hover { background: var(--bedi-mid); }
+  .btn:disabled {
+    background: var(--bedi-mist);
+    cursor: not-allowed;
+  }
+
+  .btn-gold {
+    background: var(--bedi-gold);
+    color: var(--bedi-dark);
+  }
+  .btn-gold:hover { background: #B8973F; }
+
+  .form-error {
+    color: #B23B3B;
+    font-size: 13px;
+    margin-top: -14px;
+    margin-bottom: 18px;
+    display: none;
+  }
+
+  /* ---------- PROGRESO ---------- */
+  .progreso-wrap {
+    margin-bottom: 32px;
+  }
+
+  .progreso-texto {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--bedi-mist);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .progreso-barra-bg {
+    height: 6px;
+    background: var(--bedi-pearl);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progreso-barra {
+    height: 100%;
+    background: var(--bedi-gold);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  /* ---------- RESULTADO ---------- */
+  .resultado-badge {
+    display: inline-block;
+    background: var(--bedi-pearl);
+    color: var(--bedi-mid);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .resultado-titulo {
+    font-size: 28px;
+    color: var(--bedi-dark);
+    margin-bottom: 18px;
+    line-height: 1.3;
+  }
+
+  .resultado-desc {
+    font-size: 16px;
+    color: var(--bedi-mid);
+    margin-bottom: 28px;
+  }
+
+  .resultado-caja {
+    background: var(--bedi-pearl);
+    border-left: 4px solid var(--bedi-gold);
+    padding: 20px 24px;
+    border-radius: 4px;
+    margin-bottom: 28px;
+    font-size: 15px;
+    color: var(--bedi-dark);
+  }
+
+  .loader {
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--bedi-pearl);
+    border-top-color: var(--bedi-gold);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .footer-note {
+    text-align: center;
+    color: var(--bedi-mist);
+    font-size: 13px;
+    padding: 0 0 48px;
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 26px; }
+    .card { padding: 28px 22px; margin: -24px 16px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <span class="eyebrow">BEDI · Movimiento 01</span>
+    <h1>¿Tus metas se quedan en el papel?</h1>
+    <p>Responde 6 preguntas rápidas y descubre, en menos de 3 minutos, en qué nivel está tu equipo hoy.</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+
+    <!-- ============ PANTALLA 0: INTRO + DATOS ============ -->
+    <div class="screen active" id="screen-intro">
+      <p class="intro-text">
+        Antes de empezar: esto no es un examen. No hay respuestas correctas — solo honestidad sobre cómo
+        funciona hoy tu equipo. Al final verás tu nivel directamente aquí con tu plan de acción para este nivel.
+      </p>
+
+      <label for="nombre">Tu nombre</label>
+      <input type="text" id="nombre" placeholder="Nombre y apellido">
+      <span class="form-error" id="error-nombre">Por favor ingresa tu nombre.</span>
+
+      <label for="email">Tu correo electrónico</label>
+      <input type="email" id="email" placeholder="tucorreo@empresa.com">
+      <span class="form-error" id="error-email">Ingresa un correo válido.</span>
+
+      <button class="btn btn-gold" onclick="iniciarCuestionario()">Comenzar autoevaluación →</button>
+    </div>
+
+    <!-- ============ PANTALLA 1: PREGUNTAS ============ -->
+    <div class="screen" id="screen-preguntas">
+      <div class="progreso-wrap">
+        <div class="progreso-texto" id="progreso-texto">Pregunta 1 de 6</div>
+        <div class="progreso-barra-bg"><div class="progreso-barra" id="progreso-barra"></div></div>
+      </div>
+      <div id="preguntas-contenedor"></div>
+    </div>
+
+    <!-- ============ PANTALLA 2: ENVIANDO ============ -->
+    <div class="screen" id="screen-enviando">
+      <div class="loader">
+        <div class="loader-spinner"></div>
+        <p style="color: var(--bedi-mid);">Calculando tu resultado…</p>
+      </div>
+    </div>
+
+    <!-- ============ PANTALLA 3: RESULTADO ============ -->
+    <div class="screen" id="screen-resultado">
+      <span class="resultado-badge" id="resultado-badge">Tu resultado</span>
+      <h2 class="resultado-titulo" id="resultado-titulo"></h2>
+      <p class="resultado-desc" id="resultado-desc"></p>
+      <div class="resultado-caja" id="resultado-caja"></div>
+      <p class="intro-text">
+        Guarda una captura de pantalla de este resultado. Luego vuelve a tu guía PDF y busca la sección
+        correspondiente a tu nivel — ahí encontrarás tu plan de acción detallado.
+      </p>
+      <button class="btn" onclick="window.location.href='https://bejaranodigital.com'">Volver a BEDI</button>
+    </div>
+
+    <!-- ============ PANTALLA 4: ERROR DE ENVÍO ============ -->
+    <div class="screen" id="screen-error-envio">
+      <h2 class="resultado-titulo">Tu resultado está listo</h2>
+      <p class="resultado-desc">
+        Hubo un problema técnico enviando el correo, pero tu resultado es:
+      </p>
+      <div class="resultado-caja" id="resultado-caja-fallback"></div>
+      <p class="intro-text">
+        Por favor escríbenos a <strong>gustavo@bejaranodigital.com</strong> mencionando este resultado para
+        que te enviemos el material completo.
+      </p>
+    </div>
+
+  </div>
+
+  <p class="footer-note">BEDI · Bejarano Digital S.A.S. · Cali, Colombia · Movimiento 01 – Foco</p>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG Web3Forms – REEMPLAZAR CON TU ACCESS KEY REAL
+   ============================================================
+   1. Ve a https://web3forms.com
+   2. Genera una Access Key nueva con gustavo@bejaranodigital.com
+      (independiente de la que usa el formulario "Contáctenos")
+   3. Pega esa key abajo, reemplazando TU_ACCESS_KEY_AQUI
+   ============================================================ */
+const WEB3FORMS_ACCESS_KEY = "bc5f949e-94b9-461d-935b-3733effddc48";
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+
+/* ============================================================
+   PREGUNTAS Y LÓGICA DE PUNTAJE
+   Escala por pregunta: 1 (Nunca) a 4 (Siempre)
+   Puntaje total posible: 6 a 24
+   ============================================================ */
+const preguntas = [
+  {
+    texto: "¿Tu equipo podría decir, sin pensarlo, cuál es la única prioridad de este trimestre?",
+    opciones: ["Nunca", "A veces", "Casi siempre", "Siempre"]
+  },
+  {
+    texto: "¿Cuántas \"prioridades #1\" tiene tu organización ahora mismo?",
+    opciones: ["Más de 5", "Entre 3 y 5", "2", "Solo 1"]
+  },
+  {
+    texto: "¿Existe un momento fijo en la semana donde se revisa el avance real (no un reporte)?",
+    opciones: ["Nunca", "A veces", "Casi siempre", "Siempre"]
+  },
+  {
+    texto: "¿Cuándo fue la última vez que ese ritual se canceló o se saltó?",
+    opciones: ["Esta misma semana", "Hace 2-3 semanas", "Hace más de un mes", "No recuerdo que se haya cancelado"]
+  },
+  {
+    texto: "¿Tu equipo te dice cuando algo no está funcionando, o esperan que tú lo descubras?",
+    opciones: ["Esperan que yo lo descubra", "A veces me avisan", "Casi siempre me avisan", "Siempre me avisan a tiempo"]
+  },
+  {
+    texto: "¿Qué tan cómodo se siente tu equipo diciendo \"esto no va a cumplirse\"?",
+    opciones: ["Nada cómodo", "Poco cómodo", "Bastante cómodo", "Totalmente cómodo"]
+  }
+];
+
+/* Niveles según puntaje total (6 preguntas x 1-4 puntos = 6 a 24) */
+const niveles = {
+  nivel1: {
+    rango: [6, 12],
+    titulo: "Tienes metas, no un sistema",
+    descripcion: "Tienes claridad de hacia dónde quieres ir, pero todavía no existe la estructura que lo sostenga en el día a día. Es un punto de partida real y completamente normal — la mayoría de organizaciones empiezan exactamente así.",
+    cajaTexto: "Tu plan de acción específico para este nivel está en la sección \"Tienes metas, no un sistema\" de tu guía Movimiento 01 – Foco."
+  },
+  nivel2: {
+    rango: [13, 19],
+    titulo: "Tienes sistema, pero te falta ritmo",
+    descripcion: "Ya tienes algo construido — objetivos definidos, quizás hasta una herramienta de seguimiento. Pero el ritmo se rompe seguido. No es que falte sistema: falta sostenerlo con disciplina.",
+    cajaTexto: "Tu plan de acción específico para este nivel está en la sección \"Tienes sistema, pero te falta ritmo\" de tu guía Movimiento 01 – Foco."
+  },
+  nivel3: {
+    rango: [20, 24],
+    titulo: "Tienes ritmo, ahora debes sostenerlo",
+    descripcion: "Esto ya no es lo común. Tienes prioridad clara, ritual sostenido y cierto nivel de conversación honesta instalada. El riesgo aquí no es la dispersión — es la complacencia.",
+    cajaTexto: "Tu plan de acción específico para este nivel está en la sección \"Tienes ritmo, ahora debes sostenerlo\" de tu guía Movimiento 01 – Foco."
+  }
+};
+
+let respuestas = new Array(preguntas.length).fill(null);
+let datosUsuario = { nombre: "", email: "" };
+
+/* ---------- VALIDACIÓN Y ARRANQUE ---------- */
+function validarEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function iniciarCuestionario() {
+  const nombre = document.getElementById('nombre').value.trim();
+  const email = document.getElementById('email').value.trim();
+
+  document.getElementById('error-nombre').style.display = 'none';
+  document.getElementById('error-email').style.display = 'none';
+
+  let valido = true;
+  if (nombre.length < 2) {
+    document.getElementById('error-nombre').style.display = 'block';
+    valido = false;
+  }
+  if (!validarEmail(email)) {
+    document.getElementById('error-email').style.display = 'block';
+    valido = false;
+  }
+  if (!valido) return;
+
+  datosUsuario.nombre = nombre;
+  datosUsuario.email = email;
+
+  document.getElementById('screen-intro').classList.remove('active');
+  document.getElementById('screen-preguntas').classList.add('active');
+
+  renderPreguntas();
+}
+
+/* ---------- RENDER DE PREGUNTAS ---------- */
+function renderPreguntas() {
+  const contenedor = document.getElementById('preguntas-contenedor');
+  contenedor.innerHTML = '';
+
+  preguntas.forEach((p, i) => {
+    const bloque = document.createElement('div');
+    bloque.className = 'pregunta-bloque';
+
+    let opcionesHTML = '';
+    p.opciones.forEach((op, j) => {
+      const valor = j + 1; // 1 a 4
+      opcionesHTML += `
+        <label class="opcion" id="opcion-${i}-${j}">
+          <input type="radio" name="pregunta-${i}" value="${valor}"
+                 onchange="seleccionarRespuesta(${i}, ${valor}, ${j})">
+          <span class="opcion-label">${op}</span>
+        </label>`;
+    });
+
+    bloque.innerHTML = `
+      <div class="pregunta-numero">${i + 1}</div>
+      <div class="pregunta-texto">${p.texto}</div>
+      <div class="opciones">${opcionesHTML}</div>
+    `;
+    contenedor.appendChild(bloque);
+  });
+
+  const btnEnviar = document.createElement('button');
+  btnEnviar.className = 'btn btn-gold';
+  btnEnviar.id = 'btn-ver-resultado';
+  btnEnviar.textContent = 'Ver mi resultado →';
+  btnEnviar.disabled = true;
+  btnEnviar.style.marginTop = '8px';
+  btnEnviar.onclick = calcularYEnviarResultado;
+  contenedor.appendChild(btnEnviar);
+
+  actualizarProgreso();
+}
+
+function seleccionarRespuesta(preguntaIndex, valor, opcionIndex) {
+  respuestas[preguntaIndex] = valor;
+
+  // Limpia estilo "selected" de todas las opciones de esta pregunta
+  preguntas[preguntaIndex].opciones.forEach((_, j) => {
+    document.getElementById(`opcion-${preguntaIndex}-${j}`).classList.remove('selected');
+  });
+  document.getElementById(`opcion-${preguntaIndex}-${opcionIndex}`).classList.add('selected');
+
+  actualizarProgreso();
+
+  const todasRespondidas = respuestas.every(r => r !== null);
+  document.getElementById('btn-ver-resultado').disabled = !todasRespondidas;
+}
+
+function actualizarProgreso() {
+  const respondidas = respuestas.filter(r => r !== null).length;
+  const total = preguntas.length;
+  const siguiente = Math.min(respondidas + 1, total);
+
+  document.getElementById('progreso-texto').textContent =
+    respondidas === total ? `Completado · ${total} de ${total}` : `Pregunta ${siguiente} de ${total}`;
+  document.getElementById('progreso-barra').style.width = `${(respondidas / total) * 100}%`;
+}
+
+/* ---------- CÁLCULO DE NIVEL ---------- */
+function calcularNivel(puntajeTotal) {
+  for (const key in niveles) {
+    const [min, max] = niveles[key].rango;
+    if (puntajeTotal >= min && puntajeTotal <= max) return niveles[key];
+  }
+  return niveles.nivel2; // fallback de seguridad
+}
+
+/* ---------- ENVÍO Y RESULTADO ---------- */
+function calcularYEnviarResultado() {
+  document.getElementById('screen-preguntas').classList.remove('active');
+  document.getElementById('screen-enviando').classList.add('active');
+
+  const puntajeTotal = respuestas.reduce((a, b) => a + b, 0);
+  const nivel = calcularNivel(puntajeTotal);
+  const fecha = new Date().toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Construir detalle de respuestas para el correo de notificación
+  const lineasPreguntas = preguntas.map((p, i) => {
+    const pts = respuestas[i];
+    const textoOpcion = p.opciones[pts - 1];
+    return `P${i + 1} [${pts}/4 pts]  ${p.texto}\n         → ${textoOpcion}`;
+  }).join('\n\n');
+
+  const message = [
+    'AUTOEVALUACIÓN MOVIMIENTO 01 – FOCO',
+    `Fecha: ${fecha}`,
+    '',
+    'PARTICIPANTE',
+    `Nombre : ${datosUsuario.nombre}`,
+    `Correo : ${datosUsuario.email}`,
+    '',
+    'RESULTADO FINAL',
+    `Nivel   : ${nivel.titulo}`,
+    `Puntaje : ${puntajeTotal} / 24`,
+    '',
+    nivel.descripcion,
+    '',
+    '── RESPUESTAS POR PREGUNTA ───────────────────────',
+    '',
+    lineasPreguntas,
+    '',
+    '─────────────────────────────────────────────────',
+    `TOTAL: ${puntajeTotal} / 24  →  ${nivel.titulo}`
+  ].join('\n');
+
+  const payload = {
+    access_key: WEB3FORMS_ACCESS_KEY,
+    subject: `Mov.01 · ${datosUsuario.nombre} · ${nivel.titulo} · ${puntajeTotal}/24`,
+    from_name: "BEDI – Movimiento 01",
+    email: datosUsuario.email,
+    message
+  };
+
+  fetch(WEB3FORMS_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload)
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) console.warn('Web3Forms:', data);
+      mostrarResultado(nivel);
+    })
+    .catch(function(error) {
+      console.warn('Error enviando a Web3Forms:', error);
+      mostrarResultado(nivel);
+    });
+}
+
+function mostrarResultado(nivel) {
+  document.getElementById('screen-enviando').classList.remove('active');
+  document.getElementById('resultado-titulo').textContent = nivel.titulo;
+  document.getElementById('resultado-desc').textContent = nivel.descripcion;
+  document.getElementById('resultado-caja').textContent = nivel.cajaTexto;
+  document.getElementById('screen-resultado').classList.add('active');
+}
+</script>
+
+</body>
+</html>

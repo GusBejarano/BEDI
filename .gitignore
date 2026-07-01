@@ -1,0 +1,24 @@
+# Claude Code (configuración local, no subir)
+.claude/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+*.swp
+*.swo
+
+# Node (por si se usa en el futuro)
+node_modules/
+npm-debug.log*
+
+# Netlify
+.netlify/
+
+# Archivos temporales
+*.tmp
+*.bak
+*.orig
