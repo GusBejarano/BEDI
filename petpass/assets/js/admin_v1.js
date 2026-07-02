@@ -397,18 +397,17 @@ async function descargarPDF(id) {
     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [215.9, 139.7] });
     const W = 215.9, H = 139.7;
 
-    /* ── Fondo azul noche ── */
-    doc.setFillColor(12, 35, 64);
+    /* ── Fondo blanco ── */
+    doc.setFillColor(255, 255, 255);
     doc.rect(0, 0, W, H, 'F');
 
-    /* ── Borde dorado ── */
+    /* ── Borde dorado exterior ── */
     doc.setDrawColor(201, 168, 76);
     doc.setLineWidth(0.8);
     doc.rect(4, 4, W - 8, H - 8, 'S');
 
-    /* ── Cabecera ── */
-    // Franja superior
-    doc.setFillColor(7, 23, 41);
+    /* ── Cabecera azul noche (contraste) ── */
+    doc.setFillColor(12, 35, 64);
     doc.rect(0, 0, W, 28, 'F');
 
     // Nombre empresa
@@ -422,7 +421,7 @@ async function descargarPDF(id) {
     doc.setFont('helvetica', 'normal');
     doc.text('TRANSPORTE INTERNACIONAL DE MASCOTAS', 12, 18);
 
-    // Título certificado (derecha)
+    // Título certificado (derecha, sobre cabecera oscura)
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
@@ -432,7 +431,7 @@ async function descargarPDF(id) {
     doc.setFont('helvetica', 'normal');
     doc.text('Y VERIFICACIÓN DIGITAL', W - 12, 17, { align: 'right' });
 
-    /* ── Línea separadora dorada ── */
+    /* ── Separador dorado bajo cabecera ── */
     doc.setDrawColor(201, 168, 76);
     doc.setLineWidth(0.5);
     doc.line(12, 28, W - 12, 28);
@@ -441,34 +440,39 @@ async function descargarPDF(id) {
     doc.setTextColor(201, 168, 76);
     doc.setFontSize(8);
     doc.setFont('helvetica', 'bold');
-    doc.text('CÓDIGO:', 12, 35);
-    doc.setTextColor(255, 255, 255);
+    doc.text('CÓDIGO:', 12, 36);
+    doc.setTextColor(12, 35, 64);          // azul noche sobre blanco
     doc.setFontSize(10);
-    doc.text(m.codigo, 36, 35);
+    doc.text(m.codigo, 36, 36);
 
-    doc.setTextColor(143, 168, 192);
+    doc.setTextColor(26, 58, 106);         // azul medio — fechas
     doc.setFontSize(7);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Emisión: ${formatDate(m.fecha_registro)}`, 12, 41);
-    doc.text(`Vence:   ${formatDate(m.fecha_vencimiento)}`, 12, 46);
+    doc.text(`Emisión: ${formatDate(m.fecha_registro)}`, 12, 43);
+    doc.text(`Vence:   ${formatDate(m.fecha_vencimiento)}`, 12, 48);
 
-    /* ── Foto mascota (si existe) ── */
+    /* ── Separador fino bajo código ── */
+    doc.setDrawColor(201, 168, 76);
+    doc.setLineWidth(0.25);
+    doc.line(12, 51, W - 55, 51);
+
+    /* ── Foto mascota (circular, si existe) ── */
     let fotoLoaded = false;
     if (m.foto_url) {
       try {
         const img = await loadCircularImageDataURL(m.foto_url);
-        doc.addImage(img, 'JPEG', 12, 50, 32, 32);
+        doc.addImage(img, 'JPEG', 12, 54, 32, 32);
         fotoLoaded = true;
-      } catch (_) { /* si falla, sin foto */ }
+      } catch (_) { /* continúa sin foto */ }
     }
 
     /* ── Datos mascota ── */
     const colA = fotoLoaded ? 48 : 12;
 
-    doc.setTextColor(201, 168, 76);
+    doc.setTextColor(12, 35, 64);
     doc.setFontSize(6.5);
     doc.setFont('helvetica', 'bold');
-    doc.text('DATOS DE LA MASCOTA', colA, 55);
+    doc.text('DATOS DE LA MASCOTA', colA, 58);
 
     const camposMascota = [
       ['Nombre',    m.nombre || '—'],
@@ -476,13 +480,13 @@ async function descargarPDF(id) {
       ['Tipo',      tipoLabel(m.tipo_animal)],
       ['Microchip', m.microchip || '—'],
     ];
-    let y = 61;
+    let y = 64;
     camposMascota.forEach(([label, val]) => {
-      doc.setTextColor(143, 168, 192);
+      doc.setTextColor(143, 168, 192);     // etiqueta gris niebla
       doc.setFontSize(6);
       doc.setFont('helvetica', 'normal');
       doc.text(label.toUpperCase(), colA, y);
-      doc.setTextColor(255, 255, 255);
+      doc.setTextColor(12, 35, 64);        // valor azul noche
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'bold');
       doc.text(val, colA, y + 4);
@@ -491,22 +495,22 @@ async function descargarPDF(id) {
 
     /* ── Datos propietario ── */
     const colB = 100;
-    doc.setTextColor(201, 168, 76);
+    doc.setTextColor(12, 35, 64);
     doc.setFontSize(6.5);
     doc.setFont('helvetica', 'bold');
-    doc.text('DATOS DEL PROPIETARIO', colB, 55);
+    doc.text('DATOS DEL PROPIETARIO', colB, 58);
 
     const camposProp = [
-      ['Propietario', m.nombre_dueno || '—'],
+      ['Propietario',  m.nombre_dueno || '—'],
       ['País destino', m.pais_destino  || '—'],
     ];
-    let yB = 61;
+    let yB = 64;
     camposProp.forEach(([label, val]) => {
       doc.setTextColor(143, 168, 192);
       doc.setFontSize(6);
       doc.setFont('helvetica', 'normal');
       doc.text(label.toUpperCase(), colB, yB);
-      doc.setTextColor(255, 255, 255);
+      doc.setTextColor(12, 35, 64);
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'bold');
       doc.text(val, colB, yB + 4);
@@ -515,38 +519,45 @@ async function descargarPDF(id) {
 
     /* ── Servicio contratado ── */
     if (m.tipo_servicio) {
-      doc.setTextColor(201, 168, 76);
+      doc.setTextColor(12, 35, 64);
       doc.setFontSize(6.5);
       doc.setFont('helvetica', 'bold');
-      doc.text('SERVICIO CONTRATADO', 12, 105);
-      doc.setTextColor(200, 220, 240);
+      doc.text('SERVICIO CONTRATADO', 12, 103);
+      doc.setTextColor(26, 58, 106);
       doc.setFontSize(7);
       doc.setFont('helvetica', 'normal');
-      const lines = doc.splitTextToSize(m.tipo_servicio, 130);
-      doc.text(lines, 12, 110);
+      const lines = doc.splitTextToSize(m.tipo_servicio, 145);
+      doc.text(lines, 12, 108);
     }
 
     /* ── QR ── */
     const qrCanvas = await generarQRCanvas(BASE_VERIFY_URL + '#' + m.token);
     if (qrCanvas) {
       doc.addImage(qrCanvas.toDataURL('image/png'), 'PNG', W - 48, 48, 36, 36);
-      doc.setTextColor(143, 168, 192);
+      doc.setTextColor(26, 58, 106);
       doc.setFontSize(5.5);
       doc.setFont('helvetica', 'normal');
       doc.text('ESCANEAR PARA', W - 30, 87, { align: 'center' });
       doc.text('VERIFICAR', W - 30, 91, { align: 'center' });
     }
 
+    /* ── Imagen certificado PetPass ── */
+    try {
+      const certUrl = new URL('../../Images/PetPass-Certificated.png', window.location.href).href;
+      const certImg = await loadImageDataURL(certUrl);
+      doc.addImage(certImg, 'PNG', W - 48, 94, 36, 24);
+    } catch (_) { /* imagen opcional */ }
+
     /* ── Línea y footer ── */
     doc.setDrawColor(201, 168, 76);
     doc.setLineWidth(0.3);
     doc.line(12, H - 18, W - 12, H - 18);
 
-    doc.setTextColor(143, 168, 192);
+    doc.setTextColor(26, 58, 106);
     doc.setFontSize(6);
     doc.setFont('helvetica', 'normal');
     doc.text('mudintermascotas.com · Cl. 32 #1a 27, Cali, Colombia · +57 311 625 8253', W / 2, H - 13, { align: 'center' });
-    doc.setTextColor(80, 110, 140);
+    doc.setTextColor(143, 168, 192);
     doc.text('Powered by BEDI · bejaranodigital.com', W / 2, H - 8, { align: 'center' });
 
     doc.save(`PetPass_Certificado_${m.codigo}.pdf`);
@@ -576,8 +587,8 @@ async function loadCircularImageDataURL(url) {
       c.height  = size;
       const ctx = c.getContext('2d');
 
-      // Fondo igual al PDF (evita transparencia en JPEG)
-      ctx.fillStyle = '#0C2340';
+      // Fondo blanco (evita transparencia en JPEG sobre PDF blanco)
+      ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, size, size);
 
       // Clip circular
@@ -592,6 +603,23 @@ async function loadCircularImageDataURL(url) {
       ctx.drawImage(img, srcX, srcY, size, size, 0, 0, size, size);
 
       resolve(c.toDataURL('image/jpeg', 0.92));
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+async function loadImageDataURL(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const c   = document.createElement('canvas');
+      c.width   = img.width;
+      c.height  = img.height;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      resolve(c.toDataURL('image/png'));
     };
     img.onerror = reject;
     img.src = url;

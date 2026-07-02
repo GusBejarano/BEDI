@@ -39,7 +39,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 16px;
+  font-size: clamp(14px, 2.2vw, 16px);
 }
 
 body {
@@ -127,7 +127,7 @@ a:hover {
 
 .pp-hero__title {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: clamp(1.35rem, 5vw, 1.75rem);
   font-weight: 700;
   color: var(--pp-white);
   line-height: 1.25;
@@ -135,7 +135,7 @@ a:hover {
 
 .pp-hero__msg {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   color: var(--pp-mist);
   max-width: 380px;
   line-height: 1.6;
@@ -199,7 +199,7 @@ a:hover {
 
 .pp-banner__title {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 3vw, 1rem);
   font-weight: 700;
   margin-bottom: 0.125rem;
 }
@@ -232,8 +232,8 @@ a:hover {
 }
 
 .pp-photo {
-  width: 140px;
-  height: 140px;
+  width: clamp(110px, 30vw, 140px);
+  height: clamp(110px, 30vw, 140px);
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--pp-gold);
@@ -241,8 +241,8 @@ a:hover {
 }
 
 .pp-photo-placeholder {
-  width: 140px;
-  height: 140px;
+  width: clamp(110px, 30vw, 140px);
+  height: clamp(110px, 30vw, 140px);
   border-radius: 50%;
   background-color: var(--pp-dark);
   border: 3px solid var(--pp-gold);
@@ -295,7 +295,7 @@ a:hover {
 
 .pp-field__value {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: clamp(0.875rem, 2.5vw, 0.95rem);
   font-weight: 400;
   color: var(--pp-white);
   line-height: 1.4;
@@ -325,7 +325,7 @@ a:hover {
   color: #d4e8f5;
 }
 
-/* ── Sello SVG ────────────────────────────────────────────── */
+/* ── Certificado / Sello ──────────────────────────────────── */
 .pp-sello-section {
   display: flex;
   flex-direction: column;
@@ -341,13 +341,13 @@ a:hover {
 }
 
 .pp-sello-img {
-  width: 140px;
-  height: 140px;
+  width: clamp(120px, 40vw, 180px);
+  height: auto;
 }
 
 .pp-sello-text {
   font-family: var(--font-body);
-  font-size: 0.875rem;
+  font-size: clamp(0.8rem, 2.2vw, 0.875rem);
   color: var(--pp-mist);
   line-height: 1.65;
   max-width: 480px;
@@ -403,7 +403,7 @@ a:hover {
 
 .pp-error__title {
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: clamp(1.15rem, 4vw, 1.375rem);
   font-weight: 600;
   color: var(--pp-white);
 }
@@ -995,3 +995,41 @@ a:hover {
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mb-2 { margin-bottom: 1rem; }
+
+/* ── Móvil pequeño (≤ 440 px) ────────────────────────────── */
+@media (max-width: 440px) {
+  .pp-main {
+    padding: 1rem 0.75rem;
+  }
+
+  .pp-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .pp-sello-section {
+    padding: 1.25rem 1rem;
+  }
+
+  .pp-hero {
+    padding: 2.5rem 1rem;
+    gap: 0.875rem;
+  }
+
+  .pp-hero__icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .pp-banner {
+    padding: 0.75rem 1rem;
+    gap: 0.625rem;
+  }
+
+  .pp-banner__icon {
+    font-size: 1.25rem;
+  }
+
+  .pp-footer {
+    padding: 1.5rem 1rem;
+  }
+}
