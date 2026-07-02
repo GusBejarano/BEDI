@@ -13,8 +13,8 @@
 /* ── Configuración Supabase ──────────────────────────────── */
 // ⚠️ REEMPLAZAR con las credenciales reales del proyecto "petpass" en Supabase
 // Settings → API → Project URL y anon public key
-const SUPABASE_URL  = 'https://REEMPLAZAR.supabase.co';
-const SUPABASE_ANON = 'REEMPLAZAR_CON_ANON_KEY';
+const SUPABASE_URL  = 'https://lcnsjzmashhbyvmxjbxb.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_yxqZfP2o1FKFfrWfXF689g_Z_JqH6Ei';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 

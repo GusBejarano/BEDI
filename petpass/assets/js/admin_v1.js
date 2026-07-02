@@ -6,8 +6,8 @@
 
 /* ── Configuración Supabase ──────────────────────────────── */
 // ⚠️ REEMPLAZAR con las credenciales reales del proyecto "petpass"
-const SUPABASE_URL  = 'https://REEMPLAZAR.supabase.co';
-const SUPABASE_ANON = 'REEMPLAZAR_CON_ANON_KEY';
+const SUPABASE_URL  = 'https://lcnsjzmashhbyvmxjbxb.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_yxqZfP2o1FKFfrWfXF689g_Z_JqH6Ei';
 const STORAGE_BUCKET = 'fotos-mascotas';
 const BASE_VERIFY_URL = 'https://bejaranodigital.com/petpass/';
 
