@@ -1,0 +1,997 @@
+/* ============================================================
+   PetPass v1 — Hoja de estilos oficial
+   Proyecto: Sistema de Verificación Digital de Mascotas
+   Cliente: Mudinter Mascotas · Desarrollado por BEDI
+   Versión: petpass_v1.css
+   ============================================================ */
+
+/* ── Google Fonts ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
+
+/* ── Tokens de marca ──────────────────────────────────────── */
+:root {
+  --pp-dark:      #0C2340;
+  --pp-darker:    #071729;
+  --pp-gold:      #C9A84C;
+  --pp-white:     #FFFFFF;
+  --pp-mist:      #8FA8C0;
+  --pp-card:      #10294A;
+  --pp-green:     #2E7D4F;
+  --pp-green-bg:  #E8F5EC;
+  --pp-red:       #B3392E;
+  --pp-red-bg:    #FDEBEA;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  --radius-card:  12px;
+  --radius-btn:   8px;
+  --shadow-card:  0 4px 24px rgba(0,0,0,0.28);
+}
+
+/* ── Reset base ───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--pp-darker);
+  color: var(--pp-white);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--pp-gold);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.pp-header {
+  background-color: var(--pp-darker);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.20);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem;
+}
+
+.pp-header__logo {
+  height: 48px;
+  width: auto;
+}
+
+.pp-header__brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.pp-header__name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--pp-white);
+  line-height: 1.1;
+}
+
+.pp-header__tagline {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--pp-mist);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── Main container ───────────────────────────────────────── */
+.pp-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+/* ── Estado vacío / sin QR ───────────────────────────────── */
+.pp-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  gap: 1.25rem;
+}
+
+.pp-hero__icon {
+  width: 72px;
+  height: 72px;
+  color: var(--pp-gold);
+}
+
+.pp-hero__title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--pp-white);
+  line-height: 1.25;
+}
+
+.pp-hero__msg {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--pp-mist);
+  max-width: 380px;
+  line-height: 1.6;
+}
+
+/* ── Loader ───────────────────────────────────────────────── */
+.pp-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 1rem;
+  gap: 1rem;
+  color: var(--pp-mist);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+}
+
+.pp-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(201,168,76,0.20);
+  border-top-color: var(--pp-gold);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Banner de estado ─────────────────────────────────────── */
+.pp-banner {
+  border-radius: var(--radius-card);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.pp-banner--active {
+  background-color: var(--pp-green-bg);
+  border: 1px solid var(--pp-green);
+}
+
+.pp-banner--inactive {
+  background-color: var(--pp-red-bg);
+  border: 1px solid var(--pp-red);
+}
+
+.pp-banner__icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.pp-banner__body {
+  flex: 1;
+}
+
+.pp-banner__title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.125rem;
+}
+
+.pp-banner--active .pp-banner__title  { color: var(--pp-green); }
+.pp-banner--inactive .pp-banner__title { color: var(--pp-red); }
+
+.pp-banner__code {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: #444;
+  font-weight: 500;
+}
+
+/* ── Card de la mascota ───────────────────────────────────── */
+.pp-card {
+  background-color: var(--pp-card);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: var(--radius-card);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 1.75rem;
+}
+
+/* Foto mascota */
+.pp-photo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.75rem;
+}
+
+.pp-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--pp-gold);
+  box-shadow: 0 0 0 4px rgba(201,168,76,0.15);
+}
+
+.pp-photo-placeholder {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background-color: var(--pp-dark);
+  border: 3px solid var(--pp-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pp-mist);
+}
+
+/* Grid de datos */
+.pp-data-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 520px) {
+  .pp-data-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pp-data-col__title {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pp-gold);
+  margin-bottom: 0.875rem;
+  padding-bottom: 0.375rem;
+  border-bottom: 1px solid rgba(201,168,76,0.25);
+}
+
+.pp-field {
+  margin-bottom: 0.875rem;
+}
+
+.pp-field__label {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--pp-mist);
+  margin-bottom: 0.125rem;
+  display: block;
+}
+
+.pp-field__value {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--pp-white);
+  line-height: 1.4;
+}
+
+.pp-field__value--empty {
+  color: var(--pp-mist);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+/* Servicio contratado */
+.pp-servicio-wrap {
+  background-color: rgba(201,168,76,0.07);
+  border: 1px solid rgba(201,168,76,0.18);
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+}
+
+.pp-servicio-wrap .pp-field__label {
+  margin-bottom: 0.25rem;
+}
+
+.pp-servicio-wrap .pp-field__value {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #d4e8f5;
+}
+
+/* ── Sello SVG ────────────────────────────────────────────── */
+.pp-sello-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.75rem;
+  background-color: var(--pp-card);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: var(--radius-card);
+  margin-bottom: 1.75rem;
+  box-shadow: var(--shadow-card);
+  gap: 1.25rem;
+}
+
+.pp-sello-img {
+  width: 140px;
+  height: 140px;
+}
+
+.pp-sello-text {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--pp-mist);
+  line-height: 1.65;
+  max-width: 480px;
+}
+
+/* ── Botón WhatsApp ───────────────────────────────────────── */
+.pp-btn-wa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background-color: #25D366;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  text-decoration: none;
+  margin-bottom: 1.75rem;
+}
+
+.pp-btn-wa:hover {
+  background-color: #1ebe5a;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.pp-btn-wa svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Error state ──────────────────────────────────────────── */
+.pp-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  gap: 1rem;
+}
+
+.pp-error__icon {
+  font-size: 3rem;
+}
+
+.pp-error__title {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--pp-white);
+}
+
+.pp-error__msg {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--pp-mist);
+  max-width: 360px;
+  line-height: 1.6;
+}
+
+/* ── Footer público ───────────────────────────────────────── */
+.pp-footer {
+  border-top: 1px solid rgba(143,168,192,0.15);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: var(--pp-mist);
+}
+
+.pp-footer__mudinter {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--pp-white);
+  margin-bottom: 0.25rem;
+}
+
+.pp-footer__address {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--pp-mist);
+  line-height: 1.7;
+  margin-bottom: 0.875rem;
+}
+
+.pp-footer__powered {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--pp-mist);
+  opacity: 0.6;
+}
+
+.pp-footer__powered a {
+  color: var(--pp-mist);
+  opacity: 0.8;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ADMIN PANEL — estilos específicos
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Login ────────────────────────────────────────────────── */
+.pp-login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background-color: var(--pp-darker);
+}
+
+.pp-login-card {
+  background-color: var(--pp-card);
+  border: 1px solid rgba(201,168,76,0.18);
+  border-radius: var(--radius-card);
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow-card);
+}
+
+.pp-login-card__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--pp-white);
+  text-align: center;
+  margin-bottom: 0.375rem;
+}
+
+.pp-login-card__subtitle {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pp-mist);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* ── Admin layout ─────────────────────────────────────────── */
+.pp-admin-layout {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.pp-admin-topbar {
+  background-color: var(--pp-darker);
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  padding: 0.875rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pp-admin-topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.pp-admin-topbar__logo {
+  height: 36px;
+  width: auto;
+}
+
+.pp-admin-topbar__name {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--pp-white);
+}
+
+.pp-admin-topbar__badge {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background-color: var(--pp-gold);
+  color: var(--pp-darker);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.pp-admin-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pp-admin-user {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--pp-mist);
+}
+
+.pp-admin-content {
+  flex: 1;
+  padding: 1.75rem 1.25rem;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Botones ──────────────────────────────────────────────── */
+.pp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.pp-btn:hover { text-decoration: none; transform: translateY(-1px); }
+.pp-btn:active { transform: translateY(0); }
+
+.pp-btn--primary {
+  background-color: var(--pp-gold);
+  color: var(--pp-darker);
+}
+.pp-btn--primary:hover { background-color: #b8942e; color: var(--pp-darker); }
+
+.pp-btn--danger {
+  background-color: transparent;
+  color: var(--pp-red);
+  border: 1px solid var(--pp-red);
+}
+.pp-btn--danger:hover { background-color: var(--pp-red); color: #fff; }
+
+.pp-btn--ghost {
+  background-color: transparent;
+  color: var(--pp-mist);
+  border: 1px solid rgba(143,168,192,0.3);
+}
+.pp-btn--ghost:hover { background-color: rgba(143,168,192,0.1); color: var(--pp-white); }
+
+.pp-btn--sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.pp-btn--logout {
+  background-color: transparent;
+  color: var(--pp-mist);
+  border: 1px solid rgba(143,168,192,0.25);
+  padding: 0.4rem 0.875rem;
+  font-size: 0.78rem;
+}
+.pp-btn--logout:hover { color: var(--pp-white); border-color: var(--pp-mist); }
+
+/* ── Formularios ──────────────────────────────────────────── */
+.pp-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.pp-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pp-mist);
+  margin-bottom: 0.375rem;
+}
+
+.pp-label--required::after {
+  content: ' *';
+  color: var(--pp-gold);
+}
+
+.pp-input, .pp-select, .pp-textarea {
+  width: 100%;
+  background-color: var(--pp-dark);
+  border: 1px solid rgba(143,168,192,0.25);
+  border-radius: 6px;
+  color: var(--pp-white);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.6875rem 0.875rem;
+  transition: border-color 0.15s ease;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.pp-input:focus, .pp-select:focus, .pp-textarea:focus {
+  border-color: var(--pp-gold);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+}
+
+.pp-input::placeholder, .pp-textarea::placeholder {
+  color: rgba(143,168,192,0.5);
+  font-size: 0.85rem;
+}
+
+.pp-select option {
+  background-color: var(--pp-dark);
+  color: var(--pp-white);
+}
+
+.pp-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.pp-form-readonly {
+  background-color: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 6px;
+  padding: 0.6875rem 0.875rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--pp-gold);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.pp-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 520px) {
+  .pp-form-row { grid-template-columns: 1fr; }
+}
+
+.pp-form-error {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--pp-red);
+  margin-top: 0.25rem;
+}
+
+/* ── Upload foto ──────────────────────────────────────────── */
+.pp-upload-area {
+  border: 2px dashed rgba(201,168,76,0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  background-color: rgba(201,168,76,0.03);
+}
+
+.pp-upload-area:hover, .pp-upload-area.dragging {
+  border-color: var(--pp-gold);
+  background-color: rgba(201,168,76,0.06);
+}
+
+.pp-upload-area input[type="file"] {
+  display: none;
+}
+
+.pp-upload-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--pp-gold);
+  margin: 0 auto 0.625rem;
+}
+
+.pp-upload-text {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--pp-mist);
+  line-height: 1.5;
+}
+
+.pp-upload-text strong {
+  color: var(--pp-gold);
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+/* ── Tabla admin ──────────────────────────────────────────── */
+.pp-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(143,168,192,0.15);
+  background-color: var(--pp-card);
+  box-shadow: var(--shadow-card);
+}
+
+.pp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+}
+
+.pp-table th {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pp-mist);
+  padding: 0.875rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(143,168,192,0.15);
+  white-space: nowrap;
+}
+
+.pp-table td {
+  padding: 0.875rem 1rem;
+  color: var(--pp-white);
+  border-bottom: 1px solid rgba(143,168,192,0.08);
+  vertical-align: middle;
+}
+
+.pp-table tr:last-child td {
+  border-bottom: none;
+}
+
+.pp-table tr:hover td {
+  background-color: rgba(201,168,76,0.04);
+}
+
+.pp-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pp-badge--active {
+  background-color: var(--pp-green-bg);
+  color: var(--pp-green);
+  border: 1px solid rgba(46,125,79,0.3);
+}
+
+.pp-badge--inactive {
+  background-color: var(--pp-red-bg);
+  color: var(--pp-red);
+  border: 1px solid rgba(179,57,46,0.3);
+}
+
+.pp-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: nowrap;
+}
+
+/* ── Dashboard stats ──────────────────────────────────────── */
+.pp-stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.pp-stat-card {
+  background-color: var(--pp-card);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: var(--radius-card);
+  padding: 1.25rem 1.5rem;
+}
+
+.pp-stat-card__num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--pp-gold);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.pp-stat-card__label {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pp-mist);
+}
+
+/* ── Page title bar ───────────────────────────────────────── */
+.pp-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.pp-page-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--pp-white);
+}
+
+/* ── Modal ────────────────────────────────────────────────── */
+.pp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(7,23,41,0.85);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+}
+
+.pp-modal {
+  background-color: var(--pp-card);
+  border: 1px solid rgba(201,168,76,0.18);
+  border-radius: var(--radius-card);
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.5);
+  margin: auto;
+}
+
+.pp-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(143,168,192,0.15);
+}
+
+.pp-modal__title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--pp-white);
+}
+
+.pp-modal__close {
+  background: transparent;
+  border: none;
+  color: var(--pp-mist);
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color 0.15s;
+}
+.pp-modal__close:hover { color: var(--pp-white); }
+
+.pp-modal__body {
+  padding: 1.5rem;
+}
+
+.pp-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(143,168,192,0.15);
+}
+
+/* ── Toast / notificación ─────────────────────────────────── */
+.pp-toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 340px;
+}
+
+.pp-toast {
+  background-color: var(--pp-card);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 8px;
+  padding: 0.875rem 1.125rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--pp-white);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  animation: slideIn 0.2s ease;
+}
+
+.pp-toast--success { border-left: 3px solid var(--pp-green); }
+.pp-toast--error   { border-left: 3px solid var(--pp-red); }
+.pp-toast--info    { border-left: 3px solid var(--pp-gold); }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(1rem); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── QR preview en modal ──────────────────────────────────── */
+.pp-qr-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.pp-qr-preview canvas {
+  border: 4px solid var(--pp-white);
+  border-radius: 8px;
+}
+
+.pp-qr-url {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--pp-mist);
+  word-break: break-all;
+  text-align: center;
+  max-width: 300px;
+}
+
+/* ── Utilidades ───────────────────────────────────────────── */
+.hidden { display: none !important; }
+.text-gold { color: var(--pp-gold); }
+.text-mist { color: var(--pp-mist); }
+.text-center { text-align: center; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mb-2 { margin-bottom: 1rem; }
