@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Verificación digital de mascotas — Mudinter Mascotas. Escanea el código QR de tu certificado para ver el registro."/>
+  <meta name="robots" content="noindex, nofollow"/>
+
+  <title>PetPass — Verificación de Mascota · Mudinter Mascotas</title>
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://bejaranodigital.com/petpass/"/>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <!-- Estilos PetPass -->
+  <link rel="stylesheet" href="assets/css/petpass_v1.css"/>
+
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+</head>
+<body>
+
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <header class="pp-header">
+    <div class="pp-header__brand">
+      <div class="pp-header__name">Mudinter Mascotas</div>
+      <div class="pp-header__tagline">Transporte Internacional · Verificación Digital</div>
+    </div>
+  </header>
+
+  <!-- ── Contenido principal ─────────────────────────────── -->
+  <main class="pp-main" id="pp-main">
+
+    <!-- Estado 1: cargando -->
+    <div id="state-loading" class="pp-loader hidden">
+      <div class="pp-spinner"></div>
+      <span>Consultando registro…</span>
+    </div>
+
+    <!-- Estado 2: sin hash / instrucciones -->
+    <div id="state-hero" class="pp-hero">
+      <svg class="pp-hero__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M9 12l2 2 4-4"/>
+      </svg>
+      <h1 class="pp-hero__title">Verificación de Mascota</h1>
+      <p class="pp-hero__msg">Escanee el código QR del certificado emitido por Mudinter Mascotas para ver el registro de la mascota.</p>
+    </div>
+
+    <!-- Estado 3: mascota encontrada -->
+    <div id="state-result" class="hidden">
+
+      <!-- Banner activo/inactivo -->
+      <div id="pp-banner" class="pp-banner"></div>
+
+      <!-- Card de la mascota -->
+      <div class="pp-card">
+
+        <!-- Foto -->
+        <div class="pp-photo-wrap">
+          <img id="pp-foto" class="pp-photo hidden" src="" alt="Foto de la mascota"/>
+          <div id="pp-foto-placeholder" class="pp-photo-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="3"/>
+              <path d="M6.5 15.5c.5-1.5 2-2.5 3.5-2.5h4c1.5 0 3 1 3.5 2.5"/>
+              <path d="M4 6c.5-1 1.5-1.5 2.5-1"/>
+              <path d="M20 6c-.5-1-1.5-1.5-2.5-1"/>
+              <path d="M4 18c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2v-1"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Grid de datos -->
+        <div class="pp-data-grid">
+
+          <!-- Columna izquierda: datos mascota -->
+          <div class="pp-data-col">
+            <div class="pp-data-col__title">Datos de la Mascota</div>
+
+            <div class="pp-field">
+              <span class="pp-field__label">Nombre</span>
+              <div id="f-nombre" class="pp-field__value">—</div>
+            </div>
+            <div class="pp-field">
+              <span class="pp-field__label">Raza</span>
+              <div id="f-raza" class="pp-field__value">—</div>
+            </div>
+            <div class="pp-field">
+              <span class="pp-field__label">Tipo de animal</span>
+              <div id="f-tipo" class="pp-field__value">—</div>
+            </div>
+            <div class="pp-field">
+              <span class="pp-field__label">Microchip</span>
+              <div id="f-microchip" class="pp-field__value">—</div>
+            </div>
+          </div>
+
+          <!-- Columna derecha: datos propietario -->
+          <div class="pp-data-col">
+            <div class="pp-data-col__title">Datos del Propietario</div>
+
+            <div class="pp-field">
+              <span class="pp-field__label">Propietario</span>
+              <div id="f-dueno" class="pp-field__value">—</div>
+            </div>
+            <div class="pp-field">
+              <span class="pp-field__label">País de destino</span>
+              <div id="f-destino" class="pp-field__value">—</div>
+            </div>
+            <div class="pp-field">
+              <span class="pp-field__label">Fecha de registro</span>
+              <div id="f-registro" class="pp-field__value">—</div>
+            </div>
+            <div class="pp-field">
+              <span class="pp-field__label">Fecha de vencimiento</span>
+              <div id="f-vencimiento" class="pp-field__value">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Servicio contratado -->
+        <div id="servicio-wrap" class="pp-servicio-wrap hidden">
+          <span class="pp-field__label">Servicio contratado</span>
+          <div id="f-servicio" class="pp-field__value mt-1">—</div>
+        </div>
+
+      </div><!-- /pp-card -->
+
+      <!-- Sello SVG -->
+      <div class="pp-sello-section">
+        <img class="pp-sello-img"
+             src="assets/img/sello_mudinter_v1.svg"
+             alt="Sello de verificación Mudinter Mascotas"/>
+        <p class="pp-sello-text">
+          Mudinter Mascotas certifica que la mascota identificada en este registro
+          ha sido admitida para transporte y que la documentación de viaje fue
+          revisada y aprobada por nuestro equipo antes de la emisión de este
+          certificado.
+        </p>
+      </div>
+
+      <!-- Botón WhatsApp -->
+      <a id="btn-wa" href="#" class="pp-btn-wa" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+        Compartir por WhatsApp
+      </a>
+
+    </div><!-- /state-result -->
+
+    <!-- Estado 4: error / no encontrado -->
+    <div id="state-error" class="pp-error hidden">
+      <div class="pp-error__icon">🔍</div>
+      <div id="error-title" class="pp-error__title">Registro no encontrado</div>
+      <p id="error-msg" class="pp-error__msg">Contacte a Mudinter Mascotas para verificar la validez del certificado.</p>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ───────────────────────────────────────────── -->
+  <footer class="pp-footer">
+    <div class="pp-footer__mudinter">Mudinter Mascotas</div>
+    <div class="pp-footer__address">
+      Cl. 32 #1a 27, Cali, Colombia<br/>
+      +57 311 625 8253 · +57 311 324 3067<br/>
+      <a href="https://mudintermascotas.com" target="_blank" rel="noopener">mudintermascotas.com</a>
+    </div>
+    <div class="pp-footer__powered">
+      Powered by <a href="https://bejaranodigital.com" target="_blank" rel="noopener">BEDI · bejaranodigital.com</a>
+    </div>
+  </footer>
+
+  <!-- ── Lógica de verificación ───────────────────────────── -->
+  <script src="assets/js/verificar_v1.js"></script>
+
+</body>
+</html>

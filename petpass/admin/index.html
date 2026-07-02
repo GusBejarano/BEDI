@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>PetPass Admin — Mudinter Mascotas</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <!-- Estilos PetPass -->
+  <link rel="stylesheet" href="../assets/css/petpass_v1.css"/>
+
+  <!-- Librerías externas -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       PANTALLA DE LOGIN
+       ══════════════════════════════════════════ -->
+  <div id="screen-login" class="pp-login-wrap">
+    <div class="pp-login-card">
+      <div class="pp-login-card__title">Mudinter Mascotas</div>
+      <div class="pp-login-card__subtitle">Panel PetPass · Acceso Administrativo</div>
+
+      <div class="pp-form-group">
+        <label class="pp-label pp-label--required" for="login-email">Correo electrónico</label>
+        <input class="pp-input" type="email" id="login-email" placeholder="correo@ejemplo.com" autocomplete="email"/>
+      </div>
+      <div class="pp-form-group">
+        <label class="pp-label pp-label--required" for="login-pass">Contraseña</label>
+        <input class="pp-input" type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+
+      <div id="login-error" class="pp-form-error hidden" style="margin-bottom:1rem;"></div>
+
+      <button class="pp-btn pp-btn--primary" id="btn-login" style="width:100%;justify-content:center;">
+        Ingresar al panel
+      </button>
+
+      <div style="text-align:center;margin-top:1.25rem;">
+        <a href="../" class="text-mist" style="font-size:0.78rem;">← Volver a verificación pública</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       DASHBOARD PRINCIPAL
+       ══════════════════════════════════════════ -->
+  <div id="screen-dashboard" class="pp-admin-layout hidden">
+
+    <!-- Topbar -->
+    <header class="pp-admin-topbar">
+      <div class="pp-admin-topbar__brand">
+        <div>
+          <span class="pp-admin-topbar__name">Mudinter Mascotas</span>
+          <span class="pp-admin-topbar__badge" style="margin-left:0.5rem;">PetPass Admin</span>
+        </div>
+      </div>
+      <div class="pp-admin-topbar__right">
+        <span class="pp-admin-user" id="admin-user-email"></span>
+        <button class="pp-btn pp-btn--logout" id="btn-logout">Salir</button>
+      </div>
+    </header>
+
+    <!-- Contenido -->
+    <div class="pp-admin-content">
+
+      <!-- Stats -->
+      <div class="pp-stats-row" id="stats-row">
+        <div class="pp-stat-card">
+          <div class="pp-stat-card__num" id="stat-total">—</div>
+          <div class="pp-stat-card__label">Total mascotas</div>
+        </div>
+        <div class="pp-stat-card">
+          <div class="pp-stat-card__num" id="stat-activas">—</div>
+          <div class="pp-stat-card__label">Registros activos</div>
+        </div>
+        <div class="pp-stat-card">
+          <div class="pp-stat-card__num" id="stat-inactivas">—</div>
+          <div class="pp-stat-card__label">Inactivos / Vencidos</div>
+        </div>
+      </div>
+
+      <!-- Cabecera tabla -->
+      <div class="pp-page-header">
+        <h1 class="pp-page-title">Registro de Mascotas</h1>
+        <button class="pp-btn pp-btn--primary" id="btn-nueva">
+          <span>+</span> Nueva Mascota
+        </button>
+      </div>
+
+      <!-- Tabla -->
+      <div class="pp-table-wrap">
+        <table class="pp-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Raza</th>
+              <th>Propietario</th>
+              <th>Destino</th>
+              <th>Vencimiento</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-body">
+            <tr>
+              <td colspan="8" class="text-center text-mist" style="padding:2rem;">
+                Cargando registros…
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /pp-admin-content -->
+  </div><!-- /screen-dashboard -->
+
+  <!-- ══════════════════════════════════════════
+       MODAL: Nueva / Editar mascota
+       ══════════════════════════════════════════ -->
+  <div id="modal-mascota" class="pp-modal-backdrop hidden">
+    <div class="pp-modal">
+      <div class="pp-modal__header">
+        <h2 class="pp-modal__title" id="modal-title">Nueva Mascota</h2>
+        <button class="pp-modal__close" id="modal-close" aria-label="Cerrar">×</button>
+      </div>
+      <div class="pp-modal__body">
+        <form id="form-mascota" novalidate>
+
+          <!-- Campos auto-generados (solo lectura) -->
+          <div class="pp-form-row" id="row-auto" style="display:none;">
+            <div class="pp-form-group">
+              <label class="pp-label">Código</label>
+              <div class="pp-form-readonly" id="display-codigo">Se genera automáticamente</div>
+            </div>
+            <div class="pp-form-group">
+              <label class="pp-label">Token QR</label>
+              <div class="pp-form-readonly" id="display-token" style="font-size:0.78rem;letter-spacing:0.1em;">Se genera automáticamente</div>
+            </div>
+          </div>
+
+          <!-- Datos mascota -->
+          <div style="font-family:var(--font-heading);font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--pp-gold);margin-bottom:0.875rem;padding-bottom:0.375rem;border-bottom:1px solid rgba(201,168,76,0.25);">
+            Datos de la Mascota
+          </div>
+
+          <div class="pp-form-row">
+            <div class="pp-form-group">
+              <label class="pp-label pp-label--required" for="f-nombre">Nombre de la mascota</label>
+              <input class="pp-input" type="text" id="f-nombre" placeholder="Ej: Max" required/>
+              <div class="pp-form-error hidden" id="err-nombre">Campo requerido</div>
+            </div>
+            <div class="pp-form-group">
+              <label class="pp-label" for="f-raza">Raza</label>
+              <input class="pp-input" type="text" id="f-raza" placeholder="Ej: Golden Retriever"/>
+            </div>
+          </div>
+
+          <div class="pp-form-row">
+            <div class="pp-form-group">
+              <label class="pp-label" for="f-tipo">Tipo de animal</label>
+              <select class="pp-select" id="f-tipo">
+                <option value="">Seleccionar…</option>
+                <option value="domestica">Mascota doméstica</option>
+                <option value="servicio">Perro de servicio</option>
+                <option value="apoyo">Apoyo emocional</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="pp-form-group">
+              <label class="pp-label" for="f-microchip">Número de microchip</label>
+              <input class="pp-input" type="text" id="f-microchip" placeholder="15 dígitos"/>
+            </div>
+          </div>
+
+          <!-- Foto -->
+          <div class="pp-form-group">
+            <label class="pp-label">Foto de la mascota</label>
+            <div class="pp-upload-area" id="upload-area">
+              <input type="file" id="f-foto" accept="image/*"/>
+              <img class="pp-upload-preview hidden" id="foto-preview" src="" alt="Vista previa"/>
+              <div class="pp-upload-text" id="upload-text">
+                <strong>Haz clic o arrastra una foto aquí</strong>
+                JPG o PNG · máximo 5 MB
+              </div>
+            </div>
+            <div class="pp-form-error hidden" id="err-foto"></div>
+          </div>
+
+          <!-- Datos propietario -->
+          <div style="font-family:var(--font-heading);font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--pp-gold);margin:1.25rem 0 0.875rem;padding-bottom:0.375rem;border-bottom:1px solid rgba(201,168,76,0.25);">
+            Datos del Propietario
+          </div>
+
+          <div class="pp-form-row">
+            <div class="pp-form-group">
+              <label class="pp-label pp-label--required" for="f-dueno">Nombre del propietario</label>
+              <input class="pp-input" type="text" id="f-dueno" placeholder="Nombre completo" required/>
+              <div class="pp-form-error hidden" id="err-dueno">Campo requerido</div>
+            </div>
+            <div class="pp-form-group">
+              <label class="pp-label" for="f-destino">País de destino</label>
+              <input class="pp-input" type="text" id="f-destino" placeholder="Ej: Estados Unidos"/>
+            </div>
+          </div>
+
+          <div class="pp-form-group">
+            <label class="pp-label" for="f-servicio">Tipo de servicio contratado</label>
+            <textarea class="pp-textarea" id="f-servicio" rows="2"
+              placeholder="Ej: Transporte aéreo internacional con acompañamiento completo — Colombia a EE.UU."></textarea>
+          </div>
+
+          <div class="pp-form-row">
+            <div class="pp-form-group">
+              <label class="pp-label" for="f-registro">Fecha de registro</label>
+              <input class="pp-input" type="date" id="f-registro"/>
+            </div>
+            <div class="pp-form-group">
+              <label class="pp-label" for="f-vencimiento">Fecha de vencimiento</label>
+              <input class="pp-input" type="date" id="f-vencimiento"/>
+            </div>
+          </div>
+
+          <!-- Estado (solo en edición) -->
+          <div class="pp-form-group hidden" id="row-estado">
+            <label class="pp-label">Estado del registro</label>
+            <select class="pp-select" id="f-estado">
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </div>
+
+        </form>
+      </div>
+      <div class="pp-modal__footer">
+        <div class="pp-form-error hidden" id="err-general" style="flex:1;"></div>
+        <button class="pp-btn pp-btn--ghost" id="btn-cancelar">Cancelar</button>
+        <button class="pp-btn pp-btn--primary" id="btn-guardar">
+          <span id="btn-guardar-text">Guardar registro</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MODAL: QR
+       ══════════════════════════════════════════ -->
+  <div id="modal-qr" class="pp-modal-backdrop hidden">
+    <div class="pp-modal" style="max-width:420px;">
+      <div class="pp-modal__header">
+        <h2 class="pp-modal__title">Código QR</h2>
+        <button class="pp-modal__close" id="qr-close">×</button>
+      </div>
+      <div class="pp-modal__body">
+        <div class="pp-qr-preview">
+          <div id="qr-canvas-wrap"></div>
+          <div class="pp-qr-url" id="qr-url-display"></div>
+          <div style="font-family:var(--font-heading);font-size:0.72rem;color:var(--pp-mist);text-align:center;">
+            Código: <span id="qr-codigo" style="color:var(--pp-gold);font-weight:700;"></span>
+          </div>
+        </div>
+      </div>
+      <div class="pp-modal__footer">
+        <button class="pp-btn pp-btn--ghost" id="qr-close-btn">Cerrar</button>
+        <button class="pp-btn pp-btn--primary" id="btn-descargar-qr">
+          ↓ Descargar QR (PNG)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast container ─────────────────────────────────── -->
+  <div class="pp-toast-container" id="toast-container"></div>
+
+  <!-- ── Lógica admin ─────────────────────────────────────── -->
+  <script src="../assets/js/admin_v1.js"></script>
+
+</body>
+</html>
