@@ -2,7 +2,7 @@
 # Bejarano Digital S.A.S. — bejaranodigital.com
 # Este archivo es la memoria permanente del proyecto.
 # Claude Code lo lee automáticamente al abrir esta carpeta.
-# Última actualización: Abril 2026
+# Última actualización: Julio 2026
 
 ---
 
@@ -252,29 +252,53 @@ bedi-web/
 ## 9. CONFIGURACIÓN DE DESPLIEGUE
 
 ### Dominio: bejaranodigital.com (registrado en GoDaddy)
-### Hosting objetivo: Netlify (gratuito)
+### Hosting: Netlify (gratuito) — sitio: bejarano-digital
+### Netlify Site ID: c7600929-e569-41c0-b16d-de8e408b659f
 
-### Comandos para desplegar con Netlify CLI:
+---
+
+### CONTROL DE VERSIONES — GitHub
+
+**Repositorio:** https://github.com/GusBejarano/BEDI  
+**Usuario GitHub:** GusBejarano  
+**Rama principal:** master  
+**Versión actual:** v1.0 (tagged en git — commit inicial 2026-07-01)
+
+**Flujo de trabajo (desde Julio 2026):**
 ```bash
-# Instalar Netlify CLI (una sola vez)
-npm install -g netlify-cli
+# 1. Hacer cambios en los archivos
+# 2. Registrar y subir a GitHub
+git add .
+git commit -m "descripción del cambio"
+git push
 
-# Autenticarse en Netlify
-netlify login
-
-# Despliegue inicial
-netlify deploy --dir=. --prod
-
-# Despliegues posteriores (mismo comando)
-netlify deploy --dir=. --prod
+# Netlify detecta el push automáticamente
+# bejaranodigital.com se actualiza en ~30 segundos
 ```
 
-### DNS en GoDaddy — registros a configurar:
-Cuando Netlify asigne la URL, configurar en GoDaddy DNS:
+**Etiquetar versiones importantes:**
+```bash
+git tag v1.1
+git push --tags
+```
+
+**Historial de versiones:**
+| Tag | Fecha | Descripción |
+|---|---|---|
+| v1.0 | 2026-07-01 | Primer commit — sitio completo con logo oficial, tooltips, nota Lean OKR |
+
+---
+
+### Netlify conectado a GitHub (deploy automático)
+- Cada `git push` a `master` publica automáticamente en producción
+- NO se necesita CLI de Netlify para deploys normales
+- Panel Netlify: app.netlify.com → bejarano-digital
+
+### DNS en GoDaddy — registros configurados:
 ```
 Tipo A    @    75.2.60.5       (IP de Netlify)
 Tipo A    @    99.83.190.102   (IP de Netlify secundaria)
-CNAME     www  [sitio].netlify.app
+CNAME     www  bejarano-digital.netlify.app
 ```
 
 ---
@@ -288,6 +312,14 @@ CNAME     www  [sitio].netlify.app
 4. Nunca cambiar el logo — solo el archivo original embebido
 5. Mantener el SEO: canonical, meta description, schema.org
 6. Preservar la nota legal de Lean OKR en sección #sobre y #alianzas
+
+### Después de cada cambio importante:
+```bash
+git add .
+git commit -m "descripción clara del cambio"
+git push
+# Netlify publica automáticamente en ~30 segundos
+```
 
 ### Próximas mejoras pendientes:
 - [ ] Foto profesional de Gustavo Bejarano (pendiente recibir)
@@ -321,4 +353,4 @@ CNAME     www  [sitio].netlify.app
 
 ---
 
-*CLAUDE.md — Bejarano Digital S.A.S. | Generado en colaboración con Claude (Anthropic) | Abril 2026*
+*CLAUDE.md — Bejarano Digital S.A.S. | Generado en colaboración con Claude (Anthropic) | Última actualización: Julio 2026*
