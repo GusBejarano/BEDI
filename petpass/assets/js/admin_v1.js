@@ -544,8 +544,15 @@ async function descargarPDF(id) {
     /* ── Imagen certificado PetPass ── */
     try {
       const certUrl = new URL('../../Images/PetPass-Certificated.png', window.location.href).href;
-      const certImg = await loadImageDataURL(certUrl);
-      doc.addImage(certImg, 'PNG', W - 48, 94, 36, 24);
+      const { dataUrl: certData, natW, natH } = await loadImageDataURL(certUrl);
+      // Ajustar al cuadro máximo 38×38 mm preservando proporción original
+      const MAX_MM = 38;
+      const ratio  = natW / natH;
+      const cW = ratio >= 1 ? MAX_MM : MAX_MM * ratio;
+      const cH = ratio >= 1 ? MAX_MM / ratio : MAX_MM;
+      const cX = W - 8 - cW;   // alineado al margen derecho
+      const cY = 88;            // debajo del texto QR
+      doc.addImage(certData, 'PNG', cX, cY, cW, cH);
     } catch (_) { /* imagen opcional */ }
 
     /* ── Línea y footer ── */
@@ -615,11 +622,16 @@ async function loadImageDataURL(url) {
     img.crossOrigin = 'anonymous';
     img.onload = () => {
       const c   = document.createElement('canvas');
-      c.width   = img.width;
-      c.height  = img.height;
+      c.width   = img.naturalWidth;
+      c.height  = img.naturalHeight;
       const ctx = c.getContext('2d');
+      // Sin relleno previo → mantiene canal alfa (transparencia del PNG)
       ctx.drawImage(img, 0, 0);
-      resolve(c.toDataURL('image/png'));
+      resolve({
+        dataUrl: c.toDataURL('image/png'),
+        natW: img.naturalWidth,
+        natH: img.naturalHeight,
+      });
     };
     img.onerror = reject;
     img.src = url;
