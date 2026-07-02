@@ -11,7 +11,7 @@ const SUPABASE_ANON = 'sb_publishable_yxqZfP2o1FKFfrWfXF689g_Z_JqH6Ei';
 const STORAGE_BUCKET = 'fotos-mascotas';
 const BASE_VERIFY_URL = 'https://bejaranodigital.com/petpass/';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 /* ── Estado global ───────────────────────────────────────── */
 let currentUser   = null;
@@ -79,7 +79,7 @@ async function login() {
   $('btn-login').disabled = true;
   hide('login-error');
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
+  const { data, error } = await sbClient.auth.signInWithPassword({ email, password: pass });
 
   $('btn-login').textContent = 'Ingresar al panel';
   $('btn-login').disabled = false;
@@ -97,7 +97,7 @@ async function login() {
 }
 
 async function logout() {
-  await supabase.auth.signOut();
+  await sbClient.auth.signOut();
   currentUser = null;
   showLogin();
 }
@@ -109,7 +109,7 @@ async function loadMascotas() {
   $('tabla-body').innerHTML = `
     <tr><td colspan="8" class="text-center text-mist" style="padding:2rem;">Cargando…</td></tr>`;
 
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from('mascotas')
     .select('*')
     .order('created_at', { ascending: false });
@@ -204,7 +204,7 @@ function abrirNueva() {
 }
 
 async function abrirEditar(id) {
-  const { data, error } = await supabase
+  const { data, error } = await sbClient
     .from('mascotas').select('*').eq('id', id).single();
   if (error || !data) { toast('No se pudo cargar el registro.', 'error'); return; }
 
@@ -266,13 +266,13 @@ async function guardarMascota() {
     if (uploadedFoto) {
       const ext  = uploadedFoto.name.split('.').pop();
       const path = `${Date.now()}_${generateToken(6)}.${ext}`;
-      const { error: upErr } = await supabase.storage
+      const { error: upErr } = await sbClient.storage
         .from(STORAGE_BUCKET)
         .upload(path, uploadedFoto, { upsert: true });
 
       if (upErr) throw new Error('Error al subir la foto: ' + upErr.message);
 
-      const { data: urlData } = supabase.storage
+      const { data: urlData } = sbClient.storage
         .from(STORAGE_BUCKET)
         .getPublicUrl(path);
       foto_url = urlData.publicUrl;
@@ -294,7 +294,7 @@ async function guardarMascota() {
     if (editingId) {
       // Edición
       payload.estado = $('f-estado').value;
-      const { error } = await supabase
+      const { error } = await sbClient
         .from('mascotas').update(payload).eq('id', editingId);
       if (error) throw error;
       toast('Registro actualizado correctamente.', 'success');
@@ -304,7 +304,7 @@ async function guardarMascota() {
       const year = new Date().getFullYear();
 
       // Obtener el siguiente consecutivo
-      const { count } = await supabase
+      const { count } = await sbClient
         .from('mascotas').select('id', { count: 'exact', head: true });
       const n = (count || 0) + 1;
 
@@ -312,7 +312,7 @@ async function guardarMascota() {
       payload.token  = generateToken(10);
       payload.estado = 'activo';
 
-      const { error } = await supabase
+      const { error } = await sbClient
         .from('mascotas').insert([payload]);
       if (error) throw error;
       toast('Mascota registrada exitosamente.', 'success');
@@ -334,7 +334,7 @@ async function guardarMascota() {
 /* ── Toggle estado ───────────────────────────────────────── */
 async function toggleEstado(id, estadoActual) {
   const nuevoEstado = estadoActual === 'activo' ? 'inactivo' : 'activo';
-  const { error } = await supabase
+  const { error } = await sbClient
     .from('mascotas').update({ estado: nuevoEstado }).eq('id', id);
   if (error) { toast('No se pudo actualizar el estado.', 'error'); return; }
   toast(`Registro ${nuevoEstado === 'activo' ? 'activado' : 'desactivado'}.`, 'success');
@@ -387,7 +387,7 @@ function descargarQR() {
 async function descargarPDF(id) {
   toast('Generando certificado PDF…', 'info');
 
-  const { data: m, error } = await supabase
+  const { data: m, error } = await sbClient
     .from('mascotas').select('*').eq('id', id).single();
   if (error || !m) { toast('No se pudo cargar el registro.', 'error'); return; }
 
@@ -456,8 +456,8 @@ async function descargarPDF(id) {
     let fotoLoaded = false;
     if (m.foto_url) {
       try {
-        const img = await loadImageDataURL(m.foto_url);
-        doc.addImage(img, 'JPEG', 12, 52, 30, 30);
+        const img = await loadCircularImageDataURL(m.foto_url);
+        doc.addImage(img, 'JPEG', 12, 50, 32, 32);
         fotoLoaded = true;
       } catch (_) { /* si falla, sin foto */ }
     }
@@ -564,15 +564,34 @@ function tipoLabel(tipo) {
   return map[tipo] || tipo || '—';
 }
 
-async function loadImageDataURL(url) {
+async function loadCircularImageDataURL(url) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
-      const c = document.createElement('canvas');
-      c.width = img.width; c.height = img.height;
-      c.getContext('2d').drawImage(img, 0, 0);
-      resolve(c.toDataURL('image/jpeg'));
+      // Recortar al cuadrado central (dimensión mínima)
+      const size = Math.min(img.width, img.height);
+      const c   = document.createElement('canvas');
+      c.width   = size;
+      c.height  = size;
+      const ctx = c.getContext('2d');
+
+      // Fondo igual al PDF (evita transparencia en JPEG)
+      ctx.fillStyle = '#0C2340';
+      ctx.fillRect(0, 0, size, size);
+
+      // Clip circular
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.clip();
+
+      // Dibujar imagen centrada (crop al cuadrado central)
+      const srcX = (img.width  - size) / 2;
+      const srcY = (img.height - size) / 2;
+      ctx.drawImage(img, srcX, srcY, size, size, 0, 0, size, size);
+
+      resolve(c.toDataURL('image/jpeg', 0.92));
     };
     img.onerror = reject;
     img.src = url;
@@ -651,7 +670,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Verificar sesión activa
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await sbClient.auth.getSession();
   if (session?.user) {
     currentUser = session.user;
     $('admin-user-email').textContent = currentUser.email;

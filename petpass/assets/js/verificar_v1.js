@@ -16,7 +16,7 @@
 const SUPABASE_URL  = 'https://lcnsjzmashhbyvmxjbxb.supabase.co';
 const SUPABASE_ANON = 'sb_publishable_yxqZfP2o1FKFfrWfXF689g_Z_JqH6Ei';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 /* ── Referencias al DOM ──────────────────────────────────── */
 const stateLoading = document.getElementById('state-loading');
@@ -155,7 +155,7 @@ async function init() {
   }
 
   try {
-    const { data, error } = await supabase
+    const { data, error } = await sbClient
       .from('mascotas')
       .select('*')
       .eq('token', hash)
