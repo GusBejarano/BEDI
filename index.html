@@ -60,6 +60,18 @@
     .nav-links a:hover{color:var(--dorado)}
     .nav-cta{background:var(--dorado)!important;color:var(--azul-noche)!important;padding:9px 24px!important;border-radius:var(--r-sm)!important;font-weight:700!important}
     .nav-cta:hover{background:#b8963e!important}
+    /* Hamburguesa */
+    .nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:4px;z-index:101}
+    .nav-toggle span{display:block;height:2px;background:rgba(255,255,255,0.75);border-radius:2px;transition:transform .25s ease, opacity .25s ease}
+    .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav-toggle.open span:nth-child(2){opacity:0}
+    .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    /* Menú móvil desplegado */
+    .nav-links.mobile-open{display:flex!important;flex-direction:column;align-items:flex-start;gap:0;position:fixed;top:70px;left:0;right:0;background:rgba(8,24,41,0.99);border-top:1px solid rgba(201,168,76,0.12);padding:1rem 1.5rem 1.5rem;z-index:99}
+    .nav-links.mobile-open li{width:100%;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .nav-links.mobile-open li:last-child{border-bottom:none;padding-top:.75rem}
+    .nav-links.mobile-open a{display:block;padding:.85rem 0;font-size:14px;color:rgba(255,255,255,0.7)!important}
+    .nav-links.mobile-open .nav-cta{background:var(--dorado)!important;color:var(--azul-noche)!important;padding:.85rem 1.25rem!important;border-radius:var(--r-sm)!important;text-align:center;width:100%}
 
     /* HERO */
     #hero{min-height:100vh;background:linear-gradient(145deg,#081829 0%,#0C2340 55%,#0f2d52 100%);display:flex;flex-direction:column;position:relative;overflow:hidden}
@@ -363,6 +375,7 @@
     @media(max-width:640px){
       section{padding:64px 1.25rem}
       nav{padding:0 1.25rem}
+      .nav-toggle{display:flex}
       .nav-links{display:none}
       .servicios-grid,.alianzas-grid,.nl-grid{grid-template-columns:1fr}
       .sectores-grid{grid-template-columns:1fr 1fr}
@@ -392,7 +405,10 @@
     -->   
     <img src="Images/BEDI_Logo_Oscuro.png" alt="BEDI — Bejarano Digital S.A.S." loading="lazy">
     </a>
-    <ul class="nav-links">
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#servicios">Servicios</a></li>
       <li><a href="#alianzas">Alianzas</a></li>
       <li><a href="#fundador">Fundador</a></li>
@@ -1022,6 +1038,42 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Menú hamburguesa ──
+(function(){
+  const toggle = document.getElementById('navToggle');
+  const links  = document.getElementById('navLinks');
+  if(!toggle || !links) return;
+
+  function openMenu(){
+    links.classList.add('mobile-open');
+    toggle.classList.add('open');
+    toggle.setAttribute('aria-expanded','true');
+    toggle.setAttribute('aria-label','Cerrar menú');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    links.classList.remove('mobile-open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+    toggle.setAttribute('aria-label','Abrir menú');
+    document.body.style.overflow = '';
+  }
+
+  toggle.addEventListener('click', function(){
+    links.classList.contains('mobile-open') ? closeMenu() : openMenu();
+  });
+
+  // Cerrar al tocar un enlace
+  links.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMenu);
+  });
+
+  // Cerrar al tocar fuera
+  document.addEventListener('click', function(e){
+    if(!toggle.contains(e.target) && !links.contains(e.target)) closeMenu();
+  });
+})();
 
 // ── Formularios → Web3Forms ──
 const W3F_KEY = 'e093ab60-0a4d-4cc6-a36c-0c346ed05fd8';
