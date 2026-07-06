@@ -190,6 +190,8 @@
     .alianza-desc.proceso-text{opacity:.6;font-style:italic}
     .nota-legal{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:var(--r-md);padding:.85rem 1.1rem;margin-top:1rem;font-size:12px;color:var(--azul-medio);line-height:1.6;font-weight:300}
     .nota-legal strong{color:var(--azul-noche);font-weight:600}
+    .alianza-logo{display:block;height:44px;width:auto;max-width:200px;object-fit:contain;object-position:left center;margin-bottom:.75rem}
+    .alianza-logo.logo-odoo{height:60px;max-width:240px}
 
     /* ══ PROCESO — ECIM ══ */
     #proceso{background:var(--blanco)}
@@ -395,6 +397,7 @@
       <li><a href="#alianzas">Alianzas</a></li>
       <li><a href="#fundador">Fundador</a></li>
       <li><a href="#ideas">Ideas</a></li>
+      <li><a href="/autoevaluaciones/">Autoevaluación</a></li>
       <li><a href="#contacto" class="nav-cta">Hablemos</a></li>
     </ul>
   </div>
@@ -668,16 +671,16 @@
     <div class="alianzas-grid">
       <div class="alianza-card activo reveal">
         <div class="alianza-badge ab-activo">Acuerdo activo</div>
-        <div class="alianza-nombre"><span class="gold">Lean</span> OKR<span class="gold">®</span></div>
+        <img src="Images/leanokr-logo2.png" alt="LeanOKR" class="alianza-logo">
         <div class="alianza-tipo">Formación en metodología Lean OKR®</div>
         <p class="alianza-desc">BEDI ofrece formación en Lean OKR® respaldada en la certificación personal de su fundador <strong>Gustavo Bejarano</strong> como <em>Lean OKR Professional Trainer®</em>.</p>
         <div class="nota-legal"><strong>Nota:</strong> La certificación Lean OKR® es credencial personal de Gustavo Bejarano como persona natural, en los términos del acuerdo vigente con Lean OKR®.</div>
       </div>
-      <div class="alianza-card proceso reveal reveal-delay-1">
-        <div class="alianza-badge ab-proceso">En negociación</div>
-        <div class="alianza-nombre">Odoo</div>
-        <div class="alianza-tipo">Partner de implementación ERP</div>
-        <p class="alianza-desc proceso-text">Acuerdo de partnership para implementación y soporte de plataforma de gestión empresarial integrada en Colombia y LATAM. En proceso de formalización.</p>
+      <div class="alianza-card activo reveal reveal-delay-1">
+        <div class="alianza-badge ab-activo">Acuerdo activo</div>
+        <img src="Images/odoo-learning-partner.png" alt="Odoo Learning Partner" class="alianza-logo logo-odoo">
+        <div class="alianza-tipo">Education Partner · Odoo</div>
+        <p class="alianza-desc">BEDI es Education Partner oficial de Odoo. Formación certificada, implementación y soporte del ERP de más rápido crecimiento en el mundo — en Colombia y LATAM.</p>
       </div>
 
     </div>
@@ -988,6 +991,7 @@
       <a href="#alianzas">Alianzas</a>
       <a href="#fundador">Fundador</a>
       <a href="#ideas">Ideas</a>
+      <a href="/autoevaluaciones/">Autoevaluaciones</a>
       <a href="#contacto">Contacto</a>
     </div>
     <p class="footer-legal">© 2026 Bejarano Digital S.A.S. · Cali, Colombia · Todos los derechos reservados.</p>

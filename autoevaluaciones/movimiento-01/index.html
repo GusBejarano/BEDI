@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<title>Autoevaluación – Movimiento 01 · BEDI</title>
+<meta name="robots" content="noindex, follow">
+<title>Autoevaluación Gratuita OKR · BEDI</title>
 
 <!--
   ============================================================
@@ -362,9 +362,9 @@
 
 <div class="hero">
   <div class="container">
-    <span class="eyebrow">BEDI · Movimiento 01</span>
+    <span class="eyebrow">Autoevaluación Gratuita OKR · BEDI</span>
     <h1>¿Tus metas se quedan en el papel?</h1>
-    <p>Responde 6 preguntas rápidas y descubre, en menos de 3 minutos, en qué nivel está tu equipo hoy.</p>
+    <p>Responde 6 preguntas rápidas y descubre, en menos de 2 minutos, en qué nivel está tu equipo hoy.</p>
   </div>
 </div>
 
@@ -375,7 +375,8 @@
     <div class="screen active" id="screen-intro">
       <p class="intro-text">
         Antes de empezar: esto no es un examen. No hay respuestas correctas — solo honestidad sobre cómo
-        funciona hoy tu equipo. Al final verás tu nivel directamente aquí con tu plan de acción para este nivel.
+        funciona hoy tu equipo. En menos de 2 minutos verás tu nivel directamente en pantalla,
+        y recibirás un diagnóstico personalizado en PDF a tu correo.
       </p>
 
       <label for="nombre">Tu nombre</label>
@@ -412,11 +413,11 @@
       <h2 class="resultado-titulo" id="resultado-titulo"></h2>
       <p class="resultado-desc" id="resultado-desc"></p>
       <div class="resultado-caja" id="resultado-caja"></div>
-      <p class="intro-text">
-        Guarda una captura de pantalla de este resultado. Luego vuelve a tu guía PDF y busca la sección
-        correspondiente a tu nivel — ahí encontrarás tu plan de acción detallado.
+      <p class="intro-text" style="background:var(--bedi-pearl); border-left:4px solid var(--bedi-gold); padding:16px 20px; border-radius:4px; font-size:15px; color:var(--bedi-dark);">
+        📩 <strong>Tu diagnóstico personalizado en PDF llegará a tu correo en las próximas horas.</strong>
+        Gustavo Bejarano lo revisará y te enviará tu hoja de ruta personalizada.
       </p>
-      <button class="btn" onclick="window.location.href='https://bejaranodigital.com'">Volver a BEDI</button>
+      <button class="btn" style="margin-top:8px;" onclick="window.location.href='https://bejaranodigital.com'">Volver a BEDI</button>
     </div>
 
     <!-- ============ PANTALLA 4: ERROR DE ENVÍO ============ -->
@@ -434,7 +435,7 @@
 
   </div>
 
-  <p class="footer-note">BEDI · Bejarano Digital S.A.S. · Cali, Colombia · Movimiento 01 – Foco</p>
+  <p class="footer-note">BEDI · Bejarano Digital S.A.S. · Cali, Colombia · Autoevaluación Gratuita OKR</p>
 </div>
 
 <script>
@@ -487,19 +488,19 @@ const niveles = {
     rango: [6, 12],
     titulo: "Tienes metas, no un sistema",
     descripcion: "Tienes claridad de hacia dónde quieres ir, pero todavía no existe la estructura que lo sostenga en el día a día. Es un punto de partida real y completamente normal — la mayoría de organizaciones empiezan exactamente así.",
-    cajaTexto: "Tu plan de acción específico para este nivel está en la sección \"Tienes metas, no un sistema\" de tu guía Movimiento 01 – Foco."
+    cajaTexto: "Acción inmediata: define UNA sola prioridad para tu equipo en este trimestre. Solo una — no tres, no cinco. Una."
   },
   nivel2: {
     rango: [13, 19],
     titulo: "Tienes sistema, pero te falta ritmo",
     descripcion: "Ya tienes algo construido — objetivos definidos, quizás hasta una herramienta de seguimiento. Pero el ritmo se rompe seguido. No es que falte sistema: falta sostenerlo con disciplina.",
-    cajaTexto: "Tu plan de acción específico para este nivel está en la sección \"Tienes sistema, pero te falta ritmo\" de tu guía Movimiento 01 – Foco."
+    cajaTexto: "Acción inmediata: bloquea en tu calendario el espacio semanal de revisión. Sin ese ritual fijo, el sistema muere en silencio."
   },
   nivel3: {
     rango: [20, 24],
     titulo: "Tienes ritmo, ahora debes sostenerlo",
     descripcion: "Esto ya no es lo común. Tienes prioridad clara, ritual sostenido y cierto nivel de conversación honesta instalada. El riesgo aquí no es la dispersión — es la complacencia.",
-    cajaTexto: "Tu plan de acción específico para este nivel está en la sección \"Tienes ritmo, ahora debes sostenerlo\" de tu guía Movimiento 01 – Foco."
+    cajaTexto: "Acción inmediata: documenta el sistema para que funcione sin depender de una sola persona. La sostenibilidad es el siguiente nivel."
   }
 };
 
